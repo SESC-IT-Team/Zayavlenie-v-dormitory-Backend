@@ -1,6 +1,6 @@
 from enum import Enum
 
-from app.domain.enums.role import Role
+from src.enums.role import Role
 
 
 class Permission(str, Enum):
