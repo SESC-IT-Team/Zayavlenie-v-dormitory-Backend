@@ -10,5 +10,5 @@ class Declaration(BaseModel):
     purposes: str
     leave_date: datetime
     return_date: datetime
-    adress: str
+    address: str
     contact: str
