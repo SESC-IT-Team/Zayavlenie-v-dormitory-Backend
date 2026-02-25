@@ -1,10 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-from src.enums.permission import Permission
-from src.enums.role import Role
-
-
 class Declaration(BaseModel):
     student_name: str
     student_full_name: str
