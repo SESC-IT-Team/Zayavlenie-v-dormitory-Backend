@@ -25,19 +25,12 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 
-print("DB:", settings.postgres_db)
-print("HOST:", settings.postgres_host)
-print("USER:", settings.postgres_user)
-print("PORT:", settings.postgres_port)
-
 # Set database connection parameters from settings
 config.set_section_option(section, "POSTGRES_DB", settings.postgres_db)
 config.set_section_option(section, "POSTGRES_HOST", settings.postgres_host)
 config.set_section_option(section, "POSTGRES_PORT", str(settings.postgres_port))
 config.set_section_option(section, "POSTGRES_USER", settings.postgres_user)
 config.set_section_option(section, "POSTGRES_PASSWORD", settings.postgres_password)
-
-print(config.get_section(config.config_ini_section))
 
 
 target_metadata = Base.metadata
@@ -83,7 +76,6 @@ def run_migrations_online() -> None:
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-    print(connectable.url)
     with connectable.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata
