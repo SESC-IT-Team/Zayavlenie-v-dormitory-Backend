@@ -55,3 +55,9 @@ class DeclarationRepository:
             select(DeclarationModel).where(DeclarationModel.user_id == user_id).order_by(DeclarationModel.created_at.desc()).offset(offset).limit(limit)
         )
         return [self._to_entity(m) for m in result.scalars().all()]
+
+    async def get_list(self, offset: int, limit: int) -> list[Declaration]:
+        result = await self._session.execute(
+            select(DeclarationModel).order_by(DeclarationModel.created_at.desc()).offset(offset).limit(limit)
+        )
+        return [self._to_entity(m) for m in result.scalars().all()]

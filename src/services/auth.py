@@ -1,5 +1,3 @@
-from fastapi import HTTPException, status
-
 import aiohttp
 
 from src.config import settings
@@ -14,12 +12,8 @@ class AuthService:
         async with aiohttp.ClientSession() as session:
             session.headers.update({"Authorization": f"Bearer {token}"})
             resp = await session.post(settings.auth_service_url+'/api/v1/auth/verify')
-            if resp.status == 401:
-                if resp.status == 401:
-                    raise HTTPException(
-                        status_code=status.HTTP_401_UNAUTHORIZED,
-                        detail="Incorrect or empty access token.",
-                    )
+            if resp.status != 200:
+                resp.raise_for_status()
             resp = await resp.json()
             res = VerifyTokenResponse(**resp)
         return res
@@ -31,10 +25,7 @@ class AuthService:
             session.headers.update({"Authorization": f"Bearer {token}"})
             resp = await session.get(settings.auth_service_url+'/api/v1/auth/me')
             if resp.status == 401:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Incorrect or empty access token.",
-                )
+                return None
             resp = await resp.json()
             res = GetCurrentUserResponse(**resp)
         return res
