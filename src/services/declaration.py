@@ -29,3 +29,10 @@ class DeclarationService:
     async def get_recent(self, offset: int,
                          limit: int) -> list[Declaration]:
         return await self._repo.get_list(offset, limit)
+
+    async def get_total_recent_count(self) -> int:
+        return await self._repo.get_total_count()
+
+    async def get_total_recent_count_by_user_id(self, user_id: UUID) -> int:
+        return await self._repo.get_total_count_by_user_id(user_id=user_id)
+

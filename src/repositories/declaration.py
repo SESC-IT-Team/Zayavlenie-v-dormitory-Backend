@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.declaration import DeclarationModel
@@ -61,3 +61,11 @@ class DeclarationRepository:
             select(DeclarationModel).order_by(DeclarationModel.created_at.desc()).offset(offset).limit(limit)
         )
         return [self._to_entity(m) for m in result.scalars().all()]
+
+    async def get_total_count(self):
+        result = await self._session.execute(select(func.count()).select_from(DeclarationModel))
+        return result.scalar() or 0
+
+    async def get_total_count_by_user_id(self, user_id: UUID):
+        result = await self._session.execute(select(func.count()).select_from(DeclarationModel).where(DeclarationModel.user_id == user_id))
+        return result.scalar() or 0

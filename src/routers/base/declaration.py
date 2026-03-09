@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from src.entities.declaration import Declaration
-from src.schemas.create_declaration import CreateDeclarationRequest, DeclarationResponse
+from src.schemas.declaration import CreateDeclarationRequest, DeclarationResponse, DeclarationsListResponse
 from src.schemas.verify_token_response import VerifyTokenResponse
 from src.services.declaration import DeclarationService
 from src.utils.dependencies import require_authorized, get_declaration_service
@@ -28,4 +28,5 @@ async def declaration_create(declaration_object: CreateDeclarationRequest,
 @router.get("/my_recent", response_model=list[DeclarationResponse],
             description='Получить недавние заявления, поданные авторизованным пользователем')
 async def declaration_get_my_recent(offset: int, limit: int, verified: VerifyTokenResponse = Depends(require_authorized), declaration_service: DeclarationService = Depends(get_declaration_service)):
-    return [DeclarationResponse.from_entity(entity) for entity in await declaration_service.get_recent_by_user_id(user_id=verified.user_id, offset=offset, limit=limit)]
+    return DeclarationsListResponse(declarations=[DeclarationResponse.from_entity(entity) for entity in await declaration_service.get_recent_by_user_id(user_id=verified.user_id, offset=offset, limit=limit)],
+                                    total=await declaration_service.get_total_recent_count_by_user_id(user_id=verified.user_id))
