@@ -10,6 +10,13 @@ dependencies = [
     "asyncpg>=0.31.0",
     "fastapi>=0.133.0",
     "pydantic-settings>=2.13.1",
+    "sesc-auth-sdk>=0.1.0",
     "sqlalchemy>=2.0.47",
     "uvicorn>=0.41.0",
 ]
+
+[tool.uv.workspace]
+members = ["packages/other-package"]
+
+[tool.uv.sources]
+sesc-auth-sdk = { git = "https://github.com/SESC-IT-Team/Lyceum-Auth-SDK.git" }
