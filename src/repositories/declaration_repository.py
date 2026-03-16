@@ -3,17 +3,17 @@ from uuid import UUID
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.declaration import DeclarationModel
-from src.entities.declaration import Declaration
+from src.models.declaration_model import DeclarationModel
+from src.entities.declaration_entity import DeclarationEntity
 
 
 class DeclarationRepository:
     def __init__(self, session: AsyncSession):
         self._session = session
 
-    def _to_entity(self, m: DeclarationModel) -> Declaration:
-        return Declaration(
-            declaration_id=m.id,
+    def _to_entity(self, m: DeclarationModel) -> DeclarationEntity:
+        return DeclarationEntity(
+            id=m.id,
             user_id=m.user_id,
             student_fullname=m.student_fullname,
             parent_fullname=m.parent_fullname,
@@ -26,12 +26,12 @@ class DeclarationRepository:
             updated_at=m.updated_at,
         )
 
-    async def get_by_id(self, declaration_id: UUID) -> Declaration | None:
+    async def get_by_id(self, declaration_id: UUID) -> DeclarationEntity | None:
         result = await self._session.execute(select(DeclarationModel).where(DeclarationModel.id == declaration_id))
         row = result.scalar_one_or_none()
         return self._to_entity(row) if row else None
 
-    async def create(self, declaration: Declaration) -> Declaration:
+    async def create(self, declaration: DeclarationEntity) -> DeclarationEntity:
         m = DeclarationModel(
             id=declaration.id,
             user_id=declaration.user_id,
@@ -50,13 +50,13 @@ class DeclarationRepository:
         await self._session.refresh(m)
         return self._to_entity(m)
 
-    async def get_list_by_user_id(self, user_id: UUID, offset: int, limit: int) -> list[Declaration]:
+    async def get_list_by_user_id(self, user_id: UUID, offset: int, limit: int) -> list[DeclarationEntity]:
         result = await self._session.execute(
             select(DeclarationModel).where(DeclarationModel.user_id == user_id).order_by(DeclarationModel.created_at.desc()).offset(offset).limit(limit)
         )
         return [self._to_entity(m) for m in result.scalars().all()]
 
-    async def get_list(self, offset: int, limit: int) -> list[Declaration]:
+    async def get_list(self, offset: int, limit: int) -> list[DeclarationEntity]:
         result = await self._session.execute(
             select(DeclarationModel).order_by(DeclarationModel.created_at.desc()).offset(offset).limit(limit)
         )

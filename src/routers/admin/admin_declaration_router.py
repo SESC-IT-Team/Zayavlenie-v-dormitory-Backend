@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from src.schemas.declaration import DeclarationResponse, DeclarationsListResponse
-from src.services.declaration import DeclarationService
+from src.schemas.declaration_schemas import DeclarationResponse, DeclarationsListResponse
+from src.services.declaration_service import DeclarationService
 from src.utils.dependencies import get_declaration_service
 from sesc_auth_sdk.schemas.user import UserSchema
 from sesc_auth_sdk.dependencies import LyceumAuth

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from src.routers.admin.declaration import router as declaration_router
+from src.routers.admin.admin_declaration_router import router as declaration_router
 
 router = APIRouter(tags=["admin"])
 

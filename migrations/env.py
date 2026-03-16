@@ -8,7 +8,7 @@ from alembic import context
 
 from src.config import settings
 from src.models.base import Base
-from src.models.declaration import DeclarationModel
+from src.models.declaration_model import DeclarationModel
 
 assert len(Base.metadata.tables) > 0, "No tables in Base.metadata - check model imports"
 

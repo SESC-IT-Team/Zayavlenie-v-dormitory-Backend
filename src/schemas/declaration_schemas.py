@@ -3,7 +3,7 @@ from uuid import UUID
 from pydantic import BaseModel
 from datetime import datetime
 
-from src.entities.declaration import Declaration
+from src.entities.declaration_entity import DeclarationEntity
 
 
 class CreateDeclarationRequest(BaseModel):
@@ -34,7 +34,7 @@ class DeclarationResponse(BaseModel):
     updated_at: datetime
 
     @classmethod
-    def from_entity(cls, entity: Declaration):
+    def from_entity(cls, entity: DeclarationEntity):
         return cls(id=entity.id, user_id=entity.user_id,
                    student_fullname=entity.student_fullname,
                    parent_fullname=entity.parent_fullname,

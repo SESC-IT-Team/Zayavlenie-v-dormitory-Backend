@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from src.entities.declaration import Declaration
-from src.schemas.declaration import CreateDeclarationRequest, DeclarationResponse, DeclarationsListResponse
-from src.services.declaration import DeclarationService
+from src.entities.declaration_entity import DeclarationEntity
+from src.schemas.declaration_schemas import CreateDeclarationRequest, DeclarationResponse, DeclarationsListResponse
+from src.services.declaration_service import DeclarationService
 from src.utils.dependencies import get_declaration_service
 from sesc_auth_sdk.dependencies import LyceumAuth
 from sesc_auth_sdk.schemas.user import UserSchema
@@ -14,7 +14,7 @@ router = APIRouter(tags=["declaration"])
 async def declaration_create(declaration_object: CreateDeclarationRequest,
                              user: UserSchema = Depends(LyceumAuth()),
                              declaration_service: DeclarationService = Depends(get_declaration_service)):
-    declaration_entity: Declaration = await declaration_service.create(
+    declaration_entity: DeclarationEntity = await declaration_service.create(
         user_id=user.id,
         student_fullname=declaration_object.student_fullname,
         parent_fullname=declaration_object.parent_fullname,
